@@ -27,5 +27,4 @@ import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-ed
   providers: [],
   bootstrap: [AppComponent]
 })
-// @ts-ignore
 export class AppModule {}

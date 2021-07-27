@@ -1,17 +1,17 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" class="navbar-brand">Recipe Book</a>
+      <a class="navbar-brand" href="#">Recipe Book</a>
     </div>
 
     <div class="navbar-default">
       <ul class="nav navbar-nav">
-        <li><a href="#">Recipes</a></li>
-        <li><a href="#">Shopping List</a></li>
+        <li><a (click)="navigate.emit('RECIPES')" href="#">Recipes</a></li>
+        <li><a (click)="navigate.emit('SHOPPING_LIST')" href="#">Shopping List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <a class="dropdown-toggle" href="#" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Save Data</a></li>
             <li><a href="#">Fetch Data</a></li>

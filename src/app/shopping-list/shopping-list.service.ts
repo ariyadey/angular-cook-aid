@@ -22,9 +22,12 @@ export class ShoppingListService {
   }
 
   addIngredient(ingredientModel: IngredientModel) {
-    console.log(ingredientModel);
     this._ingredients.push(ingredientModel);
-    console.log(this._ingredients);
+    this._ingredientChange.emit(this._ingredients.slice());
+  }
+
+  addIngredients(ingredients: IngredientModel[]) {
+    this._ingredients.push(...ingredients);
     this._ingredientChange.emit(this._ingredients.slice());
   }
 }

@@ -1,6 +1,7 @@
 import { EventEmitter } from '@angular/core';
 import { Injectable } from '@angular/core';
 import {RecipeModel} from "./recipe.model";
+import {IngredientModel} from "../shared/ingredient.model";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,22 @@ export class RecipeService {
     new RecipeModel(
       "Kebab",
       "Popular middle eastern food",
-      "https://www.irantravelingcenter.com/wp-content/uploads/2015/09/kebabs.jpg"
+      "https://www.irantravelingcenter.com/wp-content/uploads/2015/09/kebabs.jpg",
+      [
+        new IngredientModel("Meat", 5),
+        new IngredientModel("Rice", 10),
+      ]
     ),
     new RecipeModel(
       "Ghormeh Sabzi",
       "Delicious Persian food",
-      "https://duckduckgo.com/i/98d89bba.jpg"
+      "https://duckduckgo.com/i/98d89bba.jpg",
+      [
+        new IngredientModel("Meat", 5),
+        new IngredientModel("Rice", 10),
+        new IngredientModel("Bean", 5),
+        new IngredientModel("Vegetables", 3),
+      ]
     )
   ];
   private _recipeSelect = new EventEmitter<RecipeModel>();

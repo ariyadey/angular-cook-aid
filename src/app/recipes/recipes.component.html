@@ -4,10 +4,10 @@
   </div>
   <div class="col-md-7">
     <app-recipe-detail
-      *ngIf="selectedRecipe; else selectRecipeEl"
+      *ngIf="selectedRecipe; else noRecipeInfo"
       [recipe]="selectedRecipe">
     </app-recipe-detail>
-    <ng-template #selectRecipeEl>
+    <ng-template #noRecipeInfo>
       <p>Select a recipe to see its details</p>
     </ng-template>
   </div>

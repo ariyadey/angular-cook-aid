@@ -6,8 +6,8 @@
 
     <div class="navbar-default">
       <ul class="nav navbar-nav">
-        <li><a (click)="navigate.emit('RECIPES')" href="#">Recipes</a></li>
-        <li><a (click)="navigate.emit('SHOPPING_LIST')" href="#">Shopping List</a></li>
+        <li><a [routerLink]="['recipes']">Recipes</a></li>
+        <li><a [routerLink]="['shopping-list']">Shopping List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li appDropdown class="dropdown">

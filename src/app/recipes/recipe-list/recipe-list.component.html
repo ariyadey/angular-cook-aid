@@ -9,7 +9,9 @@
     class="col-xs-12">
     <app-recipe-item
       *ngFor="let recipe of recipes; let i = index"
-      [recipe]="recipe">
+      [recipe]="recipe"
+      [recipeIndex]="i"
+    >
     </app-recipe-item>
   </div>
 </div>

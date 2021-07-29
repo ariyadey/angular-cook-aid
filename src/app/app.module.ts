@@ -4,14 +4,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
+import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { HeaderComponent } from './header/header.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import {ShoppingListService} from "./shopping-list/shopping-list.service";
-import {AppRoutesModule} from "./app-routes/app-routes.module";
+import {AppRoutingModule} from "./app-routing/app-routing.module";
+import { NoRecipeComponent } from './recipes/recipe-detail/no-recipe/no-recipe.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +25,11 @@ import {AppRoutesModule} from "./app-routes/app-routes.module";
     ShoppingListComponent,
     ShoppingEditComponent,
     DropdownDirective,
+    NoRecipeComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutesModule,
+    AppRoutingModule,
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]

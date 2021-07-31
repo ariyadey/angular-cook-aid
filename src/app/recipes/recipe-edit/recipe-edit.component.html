@@ -6,7 +6,7 @@
           <button
             class="btn btn-success"
             type="submit"
-            [disabled]="form.invalid">Save</button>
+            [disabled]="form.invalid">{{ modeAdd ? "Add Recipe" : "Update Recipe" }}</button>
           <button class="btn btn-danger" type="button">Cancel</button>
         </div>
       </div>
@@ -73,7 +73,9 @@
                   formControlName="amount">
               </div>
               <div class="col-xs-1">
-                <button class="btn btn-danger">X</button>
+                <button
+                  class="btn btn-danger"
+                  type="button">X</button>
               </div>
             </div>
             <div class="row">
@@ -81,6 +83,7 @@
                 <button
                   class="btn btn-success"
                   type="button"
+                  [disabled]="form.get('ingredients')?.invalid"
                   (click)="onAddIngredient()">Add Ingredient</button>
               </div>
             </div>

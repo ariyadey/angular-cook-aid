@@ -6,8 +6,12 @@
           <button
             class="btn btn-success"
             type="submit"
-            [disabled]="form.invalid">{{ modeAdd ? "Add Recipe" : "Update Recipe" }}</button>
-          <button class="btn btn-danger" type="button">Cancel</button>
+            [disabled]="modeAdd ? form.invalid : form.invalid || form.pristine"
+          >{{ modeAdd ? "Add Recipe" : "Update Recipe" }}</button>
+          <button
+            class="btn btn-danger"
+            type="button"
+            routerLink="../">Cancel</button>
         </div>
       </div>
       <hr>

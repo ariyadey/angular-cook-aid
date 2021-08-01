@@ -63,7 +63,7 @@ export class WebOtpDemoComponent implements OnInit {
     if (this.validateOtp(otp)) {
       alert(`You are authorized with code: ${otp}`);
     } else {
-      alert("The entered OTP is wrong!")
+      alert(`The entered OTP is wrong!: ${otp}`)
     }
   }
 

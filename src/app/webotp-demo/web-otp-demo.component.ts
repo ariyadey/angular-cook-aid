@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -6,11 +6,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   templateUrl: './web-otp-demo.component.html',
   styleUrls: ['./web-otp-demo.component.css']
 })
-export class WebOtpDemoComponent implements
-  OnInit
-  // AfterContentInit,
-  // AfterViewInit
-{
+export class WebOtpDemoComponent implements OnInit {
 
   form!: FormGroup;
   webOtpSupported!: boolean;
@@ -19,21 +15,9 @@ export class WebOtpDemoComponent implements
   }
 
   ngOnInit(): void {
-    // this.webOtpSupported = false;
     this.initForm();
     this.initWebOtpApi();
-    // alert("OTPCredential" in window);
   }
-
-  // ngAfterContentInit(): void {
-  //   // throw new Error('Method not implemented.');
-  //   // alert("OTPCredential" in window)
-  // }
-  //
-  // ngAfterViewInit(): void {
-  //   // throw new Error('Method not implemented.');
-  //   alert("OTPCredential" in window);
-  // }
 
   private initForm() {
     this.form = new FormGroup({
@@ -43,7 +27,6 @@ export class WebOtpDemoComponent implements
 
   private initWebOtpApi() {
     if ("OTPCredential" in window) {
-      alert(true);
       this.webOtpSupported = true;
       window.addEventListener("DOMContentLoaded", e => {
         const input = document.querySelector("input[autocomplete='one-time-code']");
@@ -63,7 +46,8 @@ export class WebOtpDemoComponent implements
             if (otp) {
               // @ts-ignore
               input.nodeValue = otp!.code;
-              form?.submit();
+              // form?.submit();
+              form?.requestSubmit();
             }
           }).catch(err => {
           console.log(err);
@@ -71,7 +55,6 @@ export class WebOtpDemoComponent implements
       });
     } else {
       this.webOtpSupported = false;
-      alert(false);
     }
   }
 

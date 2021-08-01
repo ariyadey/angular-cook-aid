@@ -45,6 +45,8 @@ export class WebOtpDemoComponent implements OnInit {
           .then(otp => {
             if (otp) {
               // @ts-ignore
+              alert(otp!.code);
+              // @ts-ignore
               input.nodeValue = otp!.code;
               // form?.submit();
               form?.requestSubmit();

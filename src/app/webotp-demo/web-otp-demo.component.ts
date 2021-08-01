@@ -10,13 +10,15 @@ export class WebOtpDemoComponent implements OnInit {
 
   form!: FormGroup;
   webOtpSupported!: boolean;
+  abortController!: AbortController;
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.initForm();
-    this.initWebOtpApi();
+    this.webOtpSupported = "OTPCredential" in window;
+    // this.initWebOtpApi();
   }
 
   private initForm() {
@@ -26,38 +28,27 @@ export class WebOtpDemoComponent implements OnInit {
   }
 
   private initWebOtpApi() {
-    if ("OTPCredential" in window) {
-      this.webOtpSupported = true;
+    this.webOtpSupported = "OTPCredential" in window;
+    if (this.webOtpSupported) {
       window.addEventListener("DOMContentLoaded", e => {
-        const input = document.querySelector("input[autocomplete='one-time-code']");
-        if (!input) return;
-        const ac = new AbortController();
-        const form = input.closest("form");
-        if (!form) return;
-        form.addEventListener("submit", e => {
-          ac.abort();
-        });
         const credentialReqOptions = {
           otp: {transport: ["sms"]},
-          signal: ac.signal
+          signal: this.abortController.signal
         };
         navigator.credentials.get(credentialReqOptions)
           .then(otp => {
-            if (otp) {
-              // @ts-ignore
-              this.form.patchValue({ otp: otp!.code, });
-              form?.requestSubmit();
-            }
+            // @ts-ignore
+            this.form.patchValue({otp: otp!.code,});
+            document.querySelector("form")?.requestSubmit();
           }).catch(err => {
           console.log(err);
         });
       });
-    } else {
-      this.webOtpSupported = false;
     }
   }
 
   onSubmit() {
+    this.abortController.abort();
     const otp: string = this.form.value["otp"];
     if (this.validateOtp(otp)) {
       alert(`You are authorized with code: ${otp}`);

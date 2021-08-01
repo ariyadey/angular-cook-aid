@@ -1,0 +1,39 @@
+<div class="row text-center">
+  <div class="col-xs-12">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngIf="!webOtpSupported">
+        <p><b>NOT SUPPORTED! Change your device/browser</b></p>
+        <p><b>Only mobile browsers are supported!</b></p>
+        <p><b>Chromium V84+, Safari: iOS 14+ macOS Big Sur+</b></p>
+      </div>
+      <p>Send an SMS that includes</p>
+      <p>@ariya-mms.github.io #12345</p>
+      <p>at the last line to this phone. </p>
+      <a href="https://web.dev/web-otp/">Official Reference</a>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <label for="otp">OTP</label>
+          <input
+            class="form-control"
+            type="text"
+            id="otp"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            formControlName="otp"
+          >
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="form.invalid"
+            class="btn btn-primary"
+            type="submit"
+          >Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

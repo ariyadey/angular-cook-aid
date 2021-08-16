@@ -42,6 +42,11 @@ export class RecipeService {
     return this._recipeChange;
   }
 
+  set recipes(value: RecipeModel[]) {
+    this._recipes = value;
+    this._recipeChange.next(this._recipes.slice());
+  }
+
   addToShoppingList(ingredients: IngredientModel[]) {
     this.shoppingListService.addIngredients(ingredients);
   }

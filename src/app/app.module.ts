@@ -16,6 +16,7 @@ import { NoRecipeComponent } from './recipes/recipe-detail/no-recipe/no-recipe.c
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RecipeService} from "./recipes/recipe.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {RecipeService} from "./recipes/recipe.service";
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     RecipeService,

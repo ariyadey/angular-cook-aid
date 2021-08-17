@@ -14,7 +14,7 @@ export class DataStorageService {
   saveRecipes() {
     this.http
       .put<RecipeModel[]>(
-        "https://ng-course-project-99377-default-rtdb.europe-west1.firebasedatabase.app/",
+        "https://ng-course-project-99377-default-rtdb.europe-west1.firebasedatabase.app/recipes.json",
         this.recipeService.recipes)
       .subscribe(recipes => {
         console.log(`PUT response: ${recipes}`);
@@ -23,7 +23,7 @@ export class DataStorageService {
 
   fetchRecipes() {
     this.http
-      .get<RecipeModel[]>("https://ng-course-project-99377-default-rtdb.europe-west1.firebasedatabase.app/")
+      .get<RecipeModel[]>("https://ng-course-project-99377-default-rtdb.europe-west1.firebasedatabase.app/recipes.json")
       .subscribe(recipes => {
         console.log(`GET response: ${recipes}`);
         this.recipeService.recipes = recipes;

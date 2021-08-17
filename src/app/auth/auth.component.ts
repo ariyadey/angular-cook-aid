@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "./auth.service";
+import {Observable} from "rxjs";
+import {AuthResponseModel} from "./auth-response";
 
 @Component({
   selector: 'app-auth',
@@ -27,23 +29,26 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit() {
+    let authObservable: Observable<AuthResponseModel>
     this.loading = true;
+    this.error = null;
+
     if (this.modeLogin) {
-      //...
+      authObservable = this.authService.login(this.form.value.email, this.form.value.password);
     } else {
-      this.authService.signup(this.form.value.email, this.form.value.password)
-        .subscribe(
-          authResponse => {
-            this.loading = false;
-            this.error = null;
-            console.log(authResponse);
-          },
-          errorMessage => {
-            this.loading = false;
-            this.error = errorMessage;
-            console.log(errorMessage);
-          },
-        )
+      authObservable = this.authService.signup(this.form.value.email, this.form.value.password);
     }
+
+    authObservable.subscribe(
+      authResponse => {
+        this.loading = false;
+        console.log(authResponse);
+      },
+      errorMessage => {
+        this.loading = false;
+        this.error = errorMessage;
+        console.log(errorMessage);
+      },
+    )
   }
 }

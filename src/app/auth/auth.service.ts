@@ -2,14 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
-
-interface AuthResponseModel {
-  idToken: string,
-  email: string,
-  refreshToken: string,
-  expiresIn: string,
-  localId: string,
-}
+import {AuthResponseModel} from "./auth-response";
 
 @Injectable({
   providedIn: 'root'
@@ -46,4 +39,33 @@ export class AuthService {
         return throwError(errorMessage);
       }));
   }
+
+  login(email: string, password: string) {
+    return this.http
+      .post<AuthResponseModel>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this._webApiKey}`,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        })
+      .pipe(catchError((err) => {
+        let errorMessage: string;
+        switch (err.error.error.message) {
+          case "EMAIL_NOT_FOUND":
+            errorMessage = "There is no user record corresponding to this identifier. The user may have been deleted.";
+            break;
+          case "INVALID_PASSWORD":
+            errorMessage = "The password is invalid or the user does not have a password.";
+            break;
+          case "USER_DISABLED":
+            errorMessage = "The user account has been disabled by an administrator.";
+            break;
+          default:
+            errorMessage = "Unknown error occurred";
+        }
+        return throwError(errorMessage);
+      }));
+  }
+
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Observable} from "rxjs";
-import {AuthResponseModel} from "./auth-response";
+import {AuthResponseModel} from "./auth-response.model";
 
 @Component({
   selector: 'app-auth',

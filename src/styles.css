@@ -2,3 +2,7 @@
 a {
   cursor: pointer;
 }
+
+.btn {
+  margin: 3px;
+}

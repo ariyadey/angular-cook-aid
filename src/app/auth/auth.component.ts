@@ -38,10 +38,10 @@ export class AuthComponent implements OnInit {
             this.error = null;
             console.log(authResponse);
           },
-          error => {
+          errorMessage => {
             this.loading = false;
-            this.error = error;
-            console.log(error);
+            this.error = errorMessage;
+            console.log(errorMessage);
           },
         )
     }

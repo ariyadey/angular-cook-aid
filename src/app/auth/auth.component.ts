@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Observable} from "rxjs";
 import {AuthResponseModel} from "./auth-response.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +16,7 @@ export class AuthComponent implements OnInit {
   error!: Error | null;
   loading = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -42,6 +43,7 @@ export class AuthComponent implements OnInit {
     authObservable.subscribe(
       authResponse => {
         this.loading = false;
+        this.router.navigate(["/recipes"]);
         console.log(authResponse);
       },
       errorMessage => {

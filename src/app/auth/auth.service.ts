@@ -28,11 +28,12 @@ export class AuthService {
           returnSecureToken: true,
         })
       .pipe(
-        catchError(this.toHumanReadable),
-        tap(this.createUser));
+        catchError(error => this.toHumanReadable(error)),
+        tap(authResponse => this.createUser(authResponse)));
   }
 
   login(email: string, password: string) {
+    console.log(this._userSubject);
     return this.http
       .post<AuthResponseModel>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this._webApiKey}`,
@@ -42,8 +43,8 @@ export class AuthService {
           returnSecureToken: true,
         })
       .pipe(
-        catchError(this.toHumanReadable),
-        tap(this.createUser));
+        catchError(error => this.toHumanReadable(error)),
+        tap(authResponse => this.createUser(authResponse)));
   }
 
   private toHumanReadable(error: HttpErrorResponse) {
@@ -82,6 +83,4 @@ export class AuthService {
     );
     this._userSubject.next(user);
   }
-
-
 }

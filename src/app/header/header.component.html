@@ -11,9 +11,12 @@
         <li routerLinkActive="active"><a [routerLink]="['shopping-list']">Shopping List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="authenticated"><a>Logout</a></li>
+        <li *ngIf="authenticated"
+            (click)="onLogout()">
+          <a>Logout</a>
+        </li>
         <li appDropdown class="dropdown" *ngIf="authenticated">
-          <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <a class="dropdown-toggle">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a (click)="onSaveData()">Save Data</a></li>
             <li><a (click)="onFetchData()">Fetch Data</a></li>

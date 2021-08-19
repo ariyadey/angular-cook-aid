@@ -47,6 +47,13 @@ export class AuthService {
         tap(authResponse => this.saveUser(authResponse)));
   }
 
+  private saveUser(authResponse: AuthResponseModel) {
+    const user = UserModel.toUser(authResponse);
+    this.userSubject.next(user);
+    this._logoutTimer = this.setLogoutTimer();
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
   autoLogin() {
     const userString = localStorage.getItem("user");
     if (userString) {
@@ -57,12 +64,6 @@ export class AuthService {
 
   logout() {
     this.userSubject.next(null);
-  }
-
-  private saveUser(authResponse: AuthResponseModel) {
-    const user = UserModel.toUser(authResponse);
-    this.userSubject.next(user);
-    localStorage.setItem("user", JSON.stringify(user));
   }
 
   private setLogoutTimer() {

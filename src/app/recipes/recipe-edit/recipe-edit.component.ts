@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {RecipeModel} from "../recipe.model";
@@ -68,10 +68,6 @@ export class RecipeEditComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^[1-9]+[0-9]*$/)]),
     }));
-  }
-
-  private resetForm() {
-    this.form.reset();
   }
 
   onDeleteIngredient(index: number) {

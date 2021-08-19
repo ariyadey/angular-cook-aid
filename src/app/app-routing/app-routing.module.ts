@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {RecipesComponent} from "../recipes/recipes.component";
 import {ShoppingListComponent} from "../shopping-list/shopping-list.component";
@@ -7,16 +7,18 @@ import {RecipeDetailComponent} from "../recipes/recipe-detail/recipe-detail/reci
 import {NoRecipeComponent} from "../recipes/recipe-detail/no-recipe/no-recipe.component";
 import {RecipeEditComponent} from "../recipes/recipe-edit/recipe-edit.component";
 import {AuthComponent} from "../auth/auth.component";
+import {AuthGuard} from "../auth/auth.guard";
 
 const appRoutes: Routes = [
   {
     path: "",
     redirectTo: "recipes",
-    pathMatch: "full"
+    pathMatch: "full",
   },
   {
     path: "recipes",
     component: RecipesComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: "",
@@ -54,6 +56,9 @@ const appRoutes: Routes = [
   ],
   exports: [
     RouterModule
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class AppRoutingModule { }

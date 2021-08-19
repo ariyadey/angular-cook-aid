@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RecipeService} from "../recipes/recipe.service";
 import {HttpClient} from "@angular/common/http";
 import {RecipeModel} from "../recipes/recipe.model";
@@ -7,7 +7,7 @@ import {map} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class DataStorageService {
+export class crudService {
 
   constructor(private http: HttpClient,
               private recipeService: RecipeService) { }

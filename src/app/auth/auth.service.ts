@@ -55,7 +55,7 @@ export class AuthService {
     }
   }
 
-  private createUser(authResponse: AuthResponseModel) {
+  private saveUser(authResponse: AuthResponseModel) {
     const user = new UserModel(
       authResponse.email,
       authResponse.localId,

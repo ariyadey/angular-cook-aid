@@ -7,7 +7,7 @@ import {map} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class crudService {
+export class CrudService {
 
   constructor(private http: HttpClient,
               private recipeService: RecipeService) { }

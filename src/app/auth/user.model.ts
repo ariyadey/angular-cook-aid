@@ -1,5 +1,12 @@
 import {AuthResponseModel} from "./auth-response.model";
 
+export interface SerializedUserModel {
+  _email: string,
+  _id: string,
+  _token: string,
+  _tokenExpirationDate: string,
+}
+
 export class UserModel {
   constructor(private _email: string,
               private _id: string,
@@ -7,12 +14,21 @@ export class UserModel {
               private _tokenExpirationDate: Date) {
   }
 
-  static toUser(authResponse: AuthResponseModel) {
+  static responseToUser(authResponse: AuthResponseModel) {
     return new UserModel(
       authResponse.email,
       authResponse.localId,
       authResponse.idToken,
       new Date(Date.now() + (+authResponse.expiresIn * 1000))
+    );
+  }
+
+  static parse(user: SerializedUserModel) {
+    return new UserModel(
+      user._email,
+      user._id,
+      user._token,
+      new Date(user._tokenExpirationDate)
     );
   }
 

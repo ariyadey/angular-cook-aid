@@ -3,7 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, throwError} from "rxjs";
 import {AuthResponseModel} from "./auth-response.model";
-import {UserModel} from "./user.model";
+import {SerializedUserModel, UserModel} from "./user.model";
+import {CrudService} from "../shared/crud.service";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,9 @@ export class AuthService {
   private _userSubject = new BehaviorSubject<UserModel | null>(null);
   private _logoutTimer!: number;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private crudService: CrudService,
+              private router: Router) { }
 
   get userSubject() {
     return this._userSubject;
@@ -30,7 +34,7 @@ export class AuthService {
         })
       .pipe(
         catchError(err => throwError(err.error.error.detailedMessage)),
-        tap(authResponse => this.saveUser(authResponse)));
+        tap(authResponse => this.handleAuthResponse(authResponse)));
   }
 
   login(email: string, password: string) {
@@ -44,27 +48,31 @@ export class AuthService {
         })
       .pipe(
         catchError(err => throwError(err.error.error.message)),
-        tap(authResponse => this.saveUser(authResponse)));
+        tap(authResponse => this.handleAuthResponse(authResponse)));
   }
 
-  private saveUser(authResponse: AuthResponseModel) {
-    const user = UserModel.toUser(authResponse);
+  private handleAuthResponse(authResponse: AuthResponseModel) {
+    const user = UserModel.responseToUser(authResponse);
     this.userSubject.next(user);
     this._logoutTimer = this.setLogoutTimer();
     localStorage.setItem("user", JSON.stringify(user));
+    this.crudService.fetchRecipes();
   }
 
   autoLogin() {
     const userString = localStorage.getItem("user");
     if (userString) {
-      this.userSubject.next(JSON.parse(userString));
+      const serializedUser: SerializedUserModel = JSON.parse(userString);
+      this.userSubject.next(UserModel.parse(serializedUser));
       this._logoutTimer = this.setLogoutTimer();
+      this.crudService.fetchRecipes();
     }
   }
 
   logout() {
     localStorage.removeItem("user");
     this.userSubject.next(null);
+    this.router.navigate(["/auth"]);
   }
 
   private setLogoutTimer() {

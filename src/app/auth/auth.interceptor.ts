@@ -10,14 +10,18 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const modifiedRequest = request.clone({
-      setParams: {auth: this.authService.userSubject.getValue()?.token ?? "No Token"}
-    });
+    const token = this.authService.userSubject.getValue()?.token;
+    if (token) {
+      request = request.clone({
+        setParams: {auth: token}
+      });
+    }
     return next
-      .handle(modifiedRequest)
+      .handle(request)
       .pipe(
         catchError(err => {
-          err.error.error.detailedMessage = AuthInterceptor.getDetailedErrMsg(err.error.error.detailedMessage);
+          console.log(err)
+          err.error.error.detailedMessage = AuthInterceptor.getDetailedErrMsg(err.error.error.message);
           return throwError(err);
         }));
   }

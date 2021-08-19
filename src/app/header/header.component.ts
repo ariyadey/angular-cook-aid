@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {crudService} from "../shared/crud.service";
+import {CrudService} from "../shared/crud.service";
 import {AuthService} from "../auth/auth.service";
 import {Subscription} from "rxjs";
 
@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   authenticated!: boolean;
 
-  constructor(private dataStorageService: crudService, private authService: AuthService) { }
+  constructor(private dataStorageService: CrudService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.userSubscription = this.authService.userSubject.subscribe(user => {

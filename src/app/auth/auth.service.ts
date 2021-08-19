@@ -62,6 +62,7 @@ export class AuthService {
       authResponse.idToken,
       new Date(Date.now() + (+authResponse.expiresIn * 1000))
     );
+    localStorage.setItem("user", JSON.stringify(user));
     this._userSubject.next(user);
   }
 

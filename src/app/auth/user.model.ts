@@ -5,8 +5,7 @@ export class UserModel {
               private tokenExpirationDate: Date) {
   }
 
-
   get token() {
-    return this.tokenExpirationDate > new Date() ? this.tokenExpirationDate : null;
+    return this.tokenExpirationDate > new Date() ? this._token : null;
   }
 }

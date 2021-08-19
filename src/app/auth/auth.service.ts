@@ -11,6 +11,7 @@ import {UserModel} from "./user.model";
 export class AuthService {
   private _webApiKey = "AIzaSyDosSjxxWQmcte96l-dcos7Z4foeg-IpU0";
   private _userSubject = new BehaviorSubject<UserModel | null>(null);
+  private _logoutTimer!: number;
 
   constructor(private http: HttpClient) { }
 
@@ -33,7 +34,6 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    console.log(this._userSubject);
     return this.http
       .post<AuthResponseModel>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this._webApiKey}`,
@@ -51,22 +51,22 @@ export class AuthService {
     const userString = localStorage.getItem("user");
     if (userString) {
       this.userSubject.next(JSON.parse(userString));
-      console.log(this.userSubject);
+      this._logoutTimer = this.setLogoutTimer();
     }
-  }
-
-  private saveUser(authResponse: AuthResponseModel) {
-    const user = new UserModel(
-      authResponse.email,
-      authResponse.localId,
-      authResponse.idToken,
-      new Date(Date.now() + (+authResponse.expiresIn * 1000))
-    );
-    localStorage.setItem("user", JSON.stringify(user));
-    this._userSubject.next(user);
   }
 
   logout() {
     this.userSubject.next(null);
+  }
+
+  private saveUser(authResponse: AuthResponseModel) {
+    const user = UserModel.toUser(authResponse);
+    this.userSubject.next(user);
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  private setLogoutTimer() {
+    const expDate = this.userSubject.getValue()?.tokenExpirationDate.valueOf() ?? 0;
+    return setTimeout(() => this.logout(), (expDate - Date.now()));
   }
 }

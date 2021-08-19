@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
-import {Subject, throwError} from "rxjs";
+import {BehaviorSubject, throwError} from "rxjs";
 import {AuthResponseModel} from "./auth-response.model";
 import {UserModel} from "./user.model";
 
@@ -10,11 +10,11 @@ import {UserModel} from "./user.model";
 })
 export class AuthService {
   private _webApiKey = "AIzaSyDosSjxxWQmcte96l-dcos7Z4foeg-IpU0";
-  private _userSubject = new Subject<UserModel>();
+  private _userSubject = new BehaviorSubject<UserModel | null>(null);
 
   constructor(private http: HttpClient) { }
 
-  get userSubject(): Subject<UserModel> {
+  get userSubject() {
     return this._userSubject;
   }
 
@@ -28,8 +28,8 @@ export class AuthService {
           returnSecureToken: true,
         })
       .pipe(
-        catchError(error => this.toHumanReadable(error)),
-        tap(authResponse => this.createUser(authResponse)));
+        catchError(err => throwError(err.error.error.detailedMessage)),
+        tap(authResponse => this.saveUser(authResponse)));
   }
 
   login(email: string, password: string) {
@@ -43,35 +43,16 @@ export class AuthService {
           returnSecureToken: true,
         })
       .pipe(
-        catchError(error => this.toHumanReadable(error)),
-        tap(authResponse => this.createUser(authResponse)));
+        catchError(err => throwError(err.error.error.message)),
+        tap(authResponse => this.saveUser(authResponse)));
   }
 
-  private toHumanReadable(error: HttpErrorResponse) {
-    let errorMessage: string;
-    switch (error.error.error.message) {
-      case "EMAIL_EXISTS":
-        errorMessage = "The email address is already in use by another account.";
-        break;
-      case "OPERATION_NOT_ALLOWED":
-        errorMessage = "Password sign-in is disabled for this project.";
-        break;
-      case "TOO_MANY_ATTEMPTS_TRY_LATER":
-        errorMessage = "We have blocked all requests from this device due to unusual activity. Try again later.";
-        break;
-      case "EMAIL_NOT_FOUND":
-        errorMessage = "There is no user record corresponding to this identifier. The user may have been deleted.";
-        break;
-      case "INVALID_PASSWORD":
-        errorMessage = "The password is invalid or the user does not have a password.";
-        break;
-      case "USER_DISABLED":
-        errorMessage = "The user account has been disabled by an administrator.";
-        break;
-      default:
-        errorMessage = "Unknown error occurred";
+  autoLogin() {
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      this.userSubject.next(JSON.parse(userString));
+      console.log(this.userSubject);
     }
-    return throwError(errorMessage);
   }
 
   private createUser(authResponse: AuthResponseModel) {
@@ -82,5 +63,9 @@ export class AuthService {
       new Date(Date.now() + (+authResponse.expiresIn * 1000))
     );
     this._userSubject.next(user);
+  }
+
+  logout() {
+    this.userSubject.next(null);
   }
 }
